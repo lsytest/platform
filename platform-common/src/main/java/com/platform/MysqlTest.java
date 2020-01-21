@@ -16,7 +16,7 @@ public class MysqlTest {
     /**
      * 数据库url
      */
-    private static final String URL = "jdbc:mysql://localhost:3306/platform";
+    private static final String URL = "jdbc:mysql://localhost:3306/platform-shop";
     /**
      * 用户名
      */
@@ -24,7 +24,7 @@ public class MysqlTest {
     /**
      * 密码
      */
-    private static final String PASSWORD = "mysql123456";
+    private static final String PASSWORD = "root";
     /**
      * mysql驱动程序
      */
