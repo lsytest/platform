@@ -33,13 +33,13 @@
             <Form-item label="分类名称" prop="name">
                 <i-input v-model="category.name" placeholder="分类名称"/>
             </Form-item>
-            <Form-item label="关键字" prop="keywords">
+            <!--<Form-item label="关键字" prop="keywords">
                 <i-input v-model="category.keywords" placeholder="关键字"/>
-            </Form-item>
+            </Form-item>-->
             <Form-item label="描述" prop="frontDesc">
                 <i-input type="textarea" v-model="category.frontDesc" placeholder="描述"/>
             </Form-item>
-            <Form-item label="级别" prop="level">
+            <!--<Form-item label="级别" prop="level">
                 <Radio-group v-model="category.level">
                     <Radio label="L1">
                         <span>L1</span>
@@ -63,8 +63,8 @@
             <Form-item label="首页展示排序" prop="showIndex">
                 <Input-number :min="0" :step="1" v-model="category.showIndex" placeholder="首页展示排序"
                               style="width: 188px;"/>
-            </Form-item>
-            <Form-item label="显示" prop="isShow">
+            </Form-item>-->
+            <!--<Form-item label="显示" prop="isShow">
                 <Radio-group v-model="category.isShow">
                     <Radio label="1">
                         <span>是</span>
@@ -73,8 +73,8 @@
                         <span>否</span>
                     </Radio>
                 </Radio-group>
-            </Form-item>
-            <Row>
+            </Form-item>-->
+            <!--<Row>
                 <i-col span="16">
                     <Form-item label="banner图片" prop="bannerUrl">
                         <i-input v-model="category.bannerUrl" placeholder="banner图片" readonly/>
@@ -165,7 +165,7 @@
                         <i-button icon="eye" @click="eyeImageWapBannerUrl">预览图片</i-button>
                     </Form-item>
                 </i-col>
-            </Row>
+            </Row>-->
             <!--<Form-item label="类型" prop="type">-->
             <!--<Radio-group v-model="category.type">-->
             <!--<Radio label="0">-->
@@ -176,9 +176,9 @@
             <!--</Radio>-->
             <!--</Radio-group>-->
             <!--</Form-item>-->
-            <Form-item label="frontName" prop="frontName">
+           <!-- <Form-item label="frontName" prop="frontName">
                 <i-input type="textarea" v-model="category.frontName" placeholder="frontName"/>
-            </Form-item>
+            </Form-item>-->
             <Form-item>
                 <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>
                 <i-button type="warning" @click="reload" style="margin-left: 8px"/>

@@ -1,6 +1,8 @@
 package com.platform.controller;
 
+import com.platform.entity.DistributorsEntity;
 import com.platform.entity.OrderEntity;
+import com.platform.service.DistributorsService;
 import com.platform.service.OrderService;
 import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
@@ -23,6 +25,8 @@ import java.util.Map;
 public class OrderController {
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private DistributorsService distributorsService;
 
     /**
      * 列表
@@ -32,7 +36,6 @@ public class OrderController {
     public R list(@RequestParam Map<String, Object> params) {
         // 查询列表数据
         Query query = new Query(params);
-
         List<OrderEntity> orderList = orderService.queryList(query);
         int total = orderService.queryTotal(query);
 

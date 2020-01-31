@@ -15,6 +15,10 @@ public class OrderEntity implements Serializable {
 
     //主键
     private Integer id;
+    // 分销商ID
+    private Integer distrabutorId;
+    private String distrabutorName;
+
     //订单序列号
     private String orderSn;
     //会员Id
@@ -561,5 +565,21 @@ public class OrderEntity implements Serializable {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public Integer getDistrabutorId() {
+        return distrabutorId;
+    }
+
+    public void setDistrabutorId(Integer distrabutorId) {
+        this.distrabutorId = distrabutorId;
+    }
+
+    public String getDistrabutorName() {
+        return distrabutorName;
+    }
+
+    public void setDistrabutorName(String distrabutorName) {
+        this.distrabutorName = distrabutorName;
     }
 }

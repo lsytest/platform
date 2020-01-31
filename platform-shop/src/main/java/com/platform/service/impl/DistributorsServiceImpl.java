@@ -66,4 +66,10 @@ public class DistributorsServiceImpl extends ServiceImpl<DistributorsDao, Distri
     public boolean deleteBatch(Integer[] ids) {
         return this.removeByIds(Arrays.asList(ids));
     }
+
+    @Override
+    public boolean updateState(DistributorsEntity distributors) {
+        Integer flag = baseMapper.updateState(distributors);
+        return flag>0?true:false;
+    }
 }

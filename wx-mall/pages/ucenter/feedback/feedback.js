@@ -56,13 +56,13 @@ Page({
       title: '提交中...',
       mask:true,
       success: function () {
-
+          // alert();
       }
     });
 
     util.request(api.FeedbackAdd, { mobile: that.data.mobile, index: that.data.index, content: that.data.content}).then(function (res) {
       if (res.errno === 0) {
-
+        
         wx.hideLoading();
 
         wx.showToast({

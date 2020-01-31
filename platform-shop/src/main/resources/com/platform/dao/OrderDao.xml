@@ -8,6 +8,9 @@
         <result property="id" column="id"/>
         <result property="orderSn" column="order_sn"/>
         <result property="userId" column="user_id"/>
+        <!-- 新增分销商ID -->
+        <result property="distrabutorId" column="distrabutor_id"/>
+        <result property="distrabutorName" column="distrabutor_name"/>
         <result property="orderStatus" column="order_status"/>
         <result property="shippingStatus" column="shipping_status"/>
         <result property="payStatus" column="pay_status"/>
@@ -50,9 +53,10 @@
 	</select>
 
     <select id="queryList" resultType="com.platform.entity.OrderEntity">
-        select o.*,u.username as username
+        select o.*,u.username as username,b.name as distrabutor_name
         from nideshop_order o
         left join nideshop_user u on o.user_id = u.id
+        join specific_distributors b on o.distrabutor_id=b.id
         WHERE 1=1
         <if test="orderSn != null and orderSn.trim() != ''">
             AND o.order_sn LIKE concat('%',#{orderSn},'%')
@@ -68,6 +72,9 @@
         </if>
         <if test="orderType != null and orderType.trim() != ''">
             AND o.order_type = #{orderType}
+        </if>
+        <if test="distrabutorName!=null and distrabutorName.trim()!=''">
+            and b.name like concat('%',#{distrabutorName},'%')
         </if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">

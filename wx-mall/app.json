@@ -36,12 +36,13 @@
     "pages/shopping/selCoupon/selCoupon",
     "pages/ucenter/help/help",
     "pages/ucenter/helpInfo/helpInfo",
-    "pages/auth/btnAuth/btnAuth"
+    "pages/auth/btnAuth/btnAuth",
+    "pages/logs/logs"
   ],
   "window": {
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "仿网易严选",
+    "navigationBarTitleText": "雅安优佳",
     "navigationBarTextStyle": "black",
     "enablePullDownRefresh": true
   },

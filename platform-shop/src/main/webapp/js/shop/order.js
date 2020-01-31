@@ -1,9 +1,10 @@
 $(function () {
-    let shippingStatus = getQueryString("shippingStatus");
-    let payStatus = getQueryString("payStatus");
-    let orderStatus = getQueryString("orderStatus");
-    let orderType = getQueryString("orderType");
-    let url = '../order/list';
+    var shippingStatus = getQueryString("shippingStatus");
+    var payStatus = getQueryString("payStatus");
+    var orderStatus = getQueryString("orderStatus");
+    var distrabutorName = getQueryString("distrabutorName");
+    // var orderType = getQueryString("orderType");
+    var url = '../order/list';
     if (shippingStatus) {
         url += '?shippingStatus=' + shippingStatus;
     }
@@ -13,17 +14,21 @@ $(function () {
     if (orderStatus) {
         url += '?orderStatus=' + orderStatus;
     }
-    if (orderType) {
-        url += '?orderType=' + orderType;
+    if (orderStatus) {
+        url += '?distrabutorName=' + distrabutorName;
     }
+    /*if (orderType) {
+        url += '?orderType=' + orderType;
+    }*/
     $("#jqGrid").Grid({
         url: url,
         datatype: "json",
         colModel: [
             {label: 'id', name: 'id', index: 'id', key: true, hidden: true},
             {label: '订单号', name: 'orderSn', index: 'order_sn', width: 100},
+            {label: '分销商', name: 'distrabutorName', index: 'distrabutor_name', width: 80},
             {label: '会员', name: 'userName', index: 'user_name', width: 80},
-            {
+            /*{
                 label: '订单类型', name: 'orderType', index: 'order_type', width: 80, formatter: function (value) {
                     if (value == '1') {
                         return '普通订单';
@@ -36,7 +41,7 @@ $(function () {
                     }
                     return '-';
                 }
-            },
+            },*/
             {
                 label: '订单状态', name: 'orderStatus', index: 'order_status', width: 80, formatter: function (value) {
                     if (value == '0') {
@@ -102,16 +107,16 @@ $(function () {
                 }
             },
             {
-                label: '操作', width: 160, align: 'center', sortable: false, formatter: function (value, col, row) {
-                    return '<button class="btn btn-outline btn-info" onclick="vm.lookDetail(' + row.id + ')"><i class="fa fa-info-circle"></i>&nbsp;详情</button>' +
-                        '<button class="btn btn-outline btn-primary" style="margin-top: 10px;" onclick="vm.printDetail(' + row.id + ')"><i class="fa fa-print"></i>&nbsp;打印</button>';
+                label: '操作', width: 80, align: 'center', sortable: false, formatter: function (value, col, row) {
+                    return '<button class="btn btn-outline btn-info" onclick="vm.lookDetail(' + row.id + ')"><i class="fa fa-info-circle"></i>&nbsp;详情</button>';
+                        // '<button class="btn btn-outline btn-primary" style="margin-top: 10px;" onclick="vm.printDetail(' + row.id + ')"><i class="fa fa-print"></i>&nbsp;打印</button>';
                 }
             }
         ]
     });
 });
 
-let vm = new Vue({
+var vm = new Vue({
     el: '#rrapp',
     data: {
         showList: true,
@@ -122,15 +127,19 @@ let vm = new Vue({
         q: {
             orderSn: '',
             orderStatus: '',
-            orderType: ''
+            // orderType: ''
+            distrabutorName: ''
         }
     },
     methods: {
         query: function () {
             vm.reload();
         },
+        export: function(event) {
+
+        },
         sendGoods: function (event) {
-            let id = getSelectedRow("#jqGrid");
+            var id = getSelectedRow("#jqGrid");
             if (id == null) {
                 return;
             }
@@ -145,7 +154,7 @@ let vm = new Vue({
             });
         },
         confirm: function (event) {
-            let id = getSelectedRow("#jqGrid");
+            var id = getSelectedRow("#jqGrid");
             if (id == null) {
                 return;
             }
@@ -181,12 +190,13 @@ let vm = new Vue({
         reload: function (event) {
             vm.showList = true;
             vm.detail = false;
-            let page = $("#jqGrid").jqGrid('getGridParam', 'page');
+            var page = $("#jqGrid").jqGrid('getGridParam', 'page');
             $("#jqGrid").jqGrid('setGridParam', {
                 postData: {
                     'orderSn': vm.q.orderSn,
                     'orderStatus': vm.q.orderStatus,
-                    'orderType': vm.q.orderType
+                    'distrabutorName': vm.q.distrabutorName
+                    // 'orderType': vm.q.orderType
                 },
                 page: page
             }).trigger("reloadGrid");
@@ -211,7 +221,7 @@ let vm = new Vue({
         }
     },
     created: function () {
-        let vue = this;
+        var vue = this;
         Ajax.request({
             url: "../shipping/queryAll",
             async: true,

@@ -1,21 +1,137 @@
 $(function () {
-    $("#jqGrid").Grid({
-        url: '../distributors/list',
-        colModel: [
-			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-			{label: '会员ID', name: 'memberId', index: 'member_id', width: 80},
-			{label: '分销商名称', name: 'name', index: 'name', width: 80},
-			{label: '分销商描述', name: 'description', index: 'description', width: 80},
-			{label: '分销商图标', name: 'image', index: 'image', width: 80},
-			{label: '分销商地址', name: 'address', index: 'address', width: 80},
-			{label: '购买指数', name: 'puchaseNum', index: 'puchase_num', width: 80},
-			{label: '粉丝数', name: 'fansNum', index: 'fans_num', width: 80},
-			{label: '父级ID', name: 'parentId', index: 'parent_id', width: 80},
-			{label: '创建时间', name: 'createTime', index: 'create_time', width: 80}]
-    });
+	initialPage();
+	getGrid();
 });
 
-let vm = new Vue({
+function initialPage() {
+	$(window).resize(function () {
+		TreeGrid.table.resetHeight({height: $(window).height() - 100});
+	});
+}
+
+
+function getGrid() {
+	var colunms = TreeGrid.initColumn();
+	var table = new TreeTable(TreeGrid.id, '../distributors/queryAll', colunms);
+	table.setExpandColumn(0);
+	table.setIdField("id");
+	table.setCodeField("id");
+	table.setParentCodeField("parentId");
+	table.setExpandAll(false);
+	table.setHeight($(window).height() - 100);
+	table.init();
+	TreeGrid.table = table;
+}
+var TreeGrid = {
+	id: "jqGrid",
+	table: null,
+	layerIndex: -1
+};
+
+/**
+ * 初始化表格的列
+ */
+TreeGrid.initColumn = function () {
+	//, edittype: 'select', formatter:'select',  editoptions:{value:'1:未审核;2:审核成功;3:审核失败'}
+	/*
+	* , formatter: function (value) {
+				return transDate(value, 'yyyy-MM-dd hh:mm:sss');
+			}*/
+	var columns = [
+		{field: 'selectItem', radio: true},
+		{title: '名称', field: 'name', align: 'center', valign: 'middle', width: '200px'},
+		{title: '图标', field: 'image', align: 'center', valign: 'middle', width: '100px'},
+		{title: '描述', field: 'description', align: 'center', valign: 'middle', width: '200px'},
+		{title: '地址', field: 'address', align: 'center', valign: 'middle', width: '200px'},
+		{title: '创建时间', field: 'createTime', align: 'center', valign: 'middle', width: '200px',
+			formatter: function (item) {
+				return transDate(item.createTime, 'yyyy-MM-dd hh:mm:sss');
+			}
+		},
+		{title: '状态', field: 'state', align: 'center', valign: 'middle', width: '200px',
+			formatter: function (item) {
+				return item.state==1?'未审核':item.state==2?'审核成功':'审核拒绝';
+			}
+		}
+	];
+	return columns;
+};
+
+var vm = new Vue({
+	el: '#rrapp',
+	data: {
+		showList: true,
+		title: null,
+		distributors: {},
+		ruleValidate: {
+			name: [
+				{required: true, message: '名称不能为空', trigger: 'blur'}
+			]
+		},
+		q: {
+			name: ''
+		}
+	},
+	methods: {
+		del: function (event) {
+			var menuIds = TreeGrid.table.getSelectedRow(), ids = [];
+			if (menuIds.length == 0) {
+				iview.Message.error("请选择一条记录");
+				return;
+			}
+			confirm('确定要删除选中的记录？', function () {
+				$.each(menuIds, function (idx, item) {
+					ids[idx] = item.id;
+				});
+				Ajax.request({
+					url: "../distributors/delete",
+					params: JSON.stringify(ids),
+					type: "POST",
+					contentType: "application/json",
+					successCallback: function () {
+						alert('操作成功', function (index) {
+							vm.reload();
+						});
+					}
+				});
+			});
+		},
+		updateState: function(event) {
+			// var message = (event==2?'审核成功':'审核失败');
+			var menuIds = TreeGrid.table.getSelectedRow(), ids = [];
+			if (menuIds.length == 0) {
+				iview.Message.error("请选择一条记录");
+				return;
+			}
+			$.each(menuIds, function (idx, item) {
+				ids[idx] = item.id;
+			});
+			var items = {"ids": ids, 'state': event};
+			Ajax.request({
+				url: "../distributors/updateState",
+				params: JSON.stringify(items),
+				type: "POST",
+				contentType: "application/json",
+				successCallback: function () {
+					alert("操作成功", function (index) {
+						vm.reload();
+					});
+				}
+			});
+		},
+		query: function () {
+			vm.reload();
+		},
+		reload: function (event) {
+			vm.showList = true;
+			TreeGrid.table.refresh();
+		}
+	}
+});
+
+/*
+
+var vm = new Vue({
 	el: '#rrapp',
 	data: {
         showList: true,
@@ -40,7 +156,7 @@ let vm = new Vue({
 			vm.distributors = {};
 		},
 		update: function (event) {
-            let id = getSelectedRow("#jqGrid");
+			var id = getSelectedRow("#jqGrid");
 			if (id == null) {
 				return;
 			}
@@ -49,8 +165,28 @@ let vm = new Vue({
 
             vm.getInfo(id)
 		},
+
+		updateState: function(event) {
+			var id = getSelectedRow("#jqGrid");
+			if (id == null) {
+				alert('至少选择一个')
+				return;
+			}
+			Ajax.request({
+				url: "../distributors/updateState",
+				params: JSON.stringify(ids),
+				type: "POST",
+				contentType: "application/json",
+				successCallback: function () {
+					alert('操作成功', function (index) {
+						vm.reload();
+					});
+				}
+			});
+		},
+
 		saveOrUpdate: function (event) {
-            let url = vm.distributors.id == null ? "../distributors/save" : "../distributors/update";
+			var url = vm.distributors.id == null ? "../distributors/save" : "../distributors/update";
             Ajax.request({
 			    url: url,
                 params: JSON.stringify(vm.distributors),
@@ -64,7 +200,7 @@ let vm = new Vue({
 			});
 		},
 		del: function (event) {
-            let ids = getSelectedRows("#jqGrid");
+			var ids = getSelectedRows("#jqGrid");
 			if (ids == null){
 				return;
 			}
@@ -83,6 +219,7 @@ let vm = new Vue({
 				});
 			});
 		},
+
 		getInfo: function(id){
             Ajax.request({
                 url: "../distributors/info/"+id,
@@ -94,7 +231,7 @@ let vm = new Vue({
 		},
 		reload: function (event) {
 			vm.showList = true;
-            let page = $("#jqGrid").jqGrid('getGridParam', 'page');
+			var page = $("#jqGrid").jqGrid('getGridParam', 'page');
 			$("#jqGrid").jqGrid('setGridParam', {
                 postData: {'name': vm.q.name},
                 page: page
@@ -116,4 +253,4 @@ let vm = new Vue({
             handleResetForm(this, name);
         }
 	}
-});
+});*/

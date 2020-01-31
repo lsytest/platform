@@ -5,7 +5,7 @@ $(function () {
             {label: 'id', name: 'id', index: 'id', key: true, hidden: true},
             {label: '商品类型', name: 'categoryName', index: 'category_id', width: 80},
             {label: '名称', name: 'name', index: 'name', width: 160},
-            {label: '品牌', name: 'brandName', index: 'brand_id', width: 120},
+            /*{label: '品牌', name: 'brandName', index: 'brand_id', width: 120},*/
             {
                 label: '上架', name: 'isOnSale', index: 'is_on_sale', width: 50,
                 formatter: function (value) {
@@ -17,16 +17,17 @@ $(function () {
                     return transDate(value, 'yyyy-MM-dd');
                 }
             },
-            {label: '属性类别', name: 'attributeCategoryName', index: 'attribute_category', width: 80},
+            /*{label: '属性类别', name: 'attributeCategoryName', index: 'attribute_category', width: 80},*/
             {label: '零售价格', name: 'retailPrice', index: 'retail_price', width: 80},
             {label: '商品库存', name: 'goodsNumber', index: 'goods_number', width: 80},
             {label: '销售量', name: 'sellVolume', index: 'sell_volume', width: 80},
             {label: '市场价', name: 'marketPrice', index: 'market_price', width: 80},
-            {
+            /*{
                 label: '热销', name: 'isHot', index: 'is_hot', width: 80, formatter: function (value) {
                     return transIsNot(value);
                 }
-            }]
+            }*/
+            ]
     });
     $('#goodsDesc').editable({
         inlineMode: false,

@@ -54,6 +54,11 @@ Page({
       }
     });
     */
+    util.request(api.IndexUrlDistrabutorBanner).then(function(res){
+      if (res.errno===0){
+
+      }
+    })
     util.request(api.GoodsList).then(function (res) {
       if (res.errno === 0) {
         data.goodsList = res.data.goodsList

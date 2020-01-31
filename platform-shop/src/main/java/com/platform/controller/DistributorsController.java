@@ -4,14 +4,19 @@
  *
  * 修改履历:
  *     日期                       修正者        主要内容
- *     2020-01-20 20:28:54        lipengjun     初版做成
+ *     2020-01-20 20:28:54        lsy     初版做成
  *
  * Copyright (c) 2019-2019 微同科技
  */
 package com.platform.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.mysql.cj.xdevapi.JsonArray;
 import com.platform.annotation.SysLog;
+import com.platform.utils.PageUtils;
+import com.platform.utils.Query;
 import com.platform.utils.R;
 import com.platform.controller.AbstractController;
 import com.platform.entity.DistributorsEntity;
@@ -26,11 +31,11 @@ import java.util.Map;
 /**
  * Controller
  *
- * @author lipengjun
+ * @author lsy
  * @date 2020-01-20 20:28:54
  */
 @RestController
-@RequestMapping("specific/distributors")
+@RequestMapping("distributors")
 public class DistributorsController extends AbstractController {
     @Autowired
     private DistributorsService distributorsService;
@@ -42,7 +47,7 @@ public class DistributorsController extends AbstractController {
      * @return R
      */
     @RequestMapping("/queryAll")
-    @RequiresPermissions("specific:distributors:list")
+    @RequiresPermissions("distributors:list")
     public R queryAll(@RequestParam Map<String, Object> params) {
         List<DistributorsEntity> list = distributorsService.queryAll(params);
 
@@ -56,11 +61,12 @@ public class DistributorsController extends AbstractController {
      * @return R
      */
     @GetMapping("/list")
-    @RequiresPermissions("specific:distributors:list")
+    @RequiresPermissions("distributors:list")
     public R list(@RequestParam Map<String, Object> params) {
+        Query query = new Query(params);
         Page page = distributorsService.queryPage(params);
-
-        return R.ok().put("page", page);
+        PageUtils pageUtil = new PageUtils(page.getRecords(), page.getRecords().size(), query.getPage(), query.getLimit());
+        return R.ok().put("page", pageUtil);
     }
 
     /**
@@ -70,7 +76,7 @@ public class DistributorsController extends AbstractController {
      * @return R
      */
     @RequestMapping("/info/{id}")
-    @RequiresPermissions("specific:distributors:info")
+    @RequiresPermissions("distributors:info")
     public R info(@PathVariable("id") Integer id) {
         DistributorsEntity distributors = distributorsService.getById(id);
 
@@ -85,7 +91,7 @@ public class DistributorsController extends AbstractController {
      */
     @SysLog("新增")
     @RequestMapping("/save")
-    @RequiresPermissions("specific:distributors:save")
+    @RequiresPermissions("distributors:save")
     public R save(@RequestBody DistributorsEntity distributors) {
 
         distributorsService.add(distributors);
@@ -101,7 +107,7 @@ public class DistributorsController extends AbstractController {
      */
     @SysLog("修改")
     @RequestMapping("/update")
-    @RequiresPermissions("specific:distributors:update")
+    @RequiresPermissions("distributors:update")
     public R update(@RequestBody DistributorsEntity distributors) {
 
         distributorsService.update(distributors);
@@ -117,10 +123,20 @@ public class DistributorsController extends AbstractController {
      */
     @SysLog("删除")
     @RequestMapping("/delete")
-    @RequiresPermissions("specific:distributors:delete")
+    @RequiresPermissions("distributors:delete")
     public R delete(@RequestBody Integer[] ids) {
         distributorsService.deleteBatch(ids);
-
         return R.ok();
+    }
+
+    @SysLog("修改状态")
+    @RequestMapping("/updateState")
+    public R updateState(@RequestBody DistributorsEntity distributors){
+        boolean flag = distributorsService.updateState(distributors);
+        if(flag){
+            return R.ok();
+        }else{
+            return R.error("审核失败");
+        }
     }
 }

@@ -72,4 +72,6 @@ public interface DistributorsService extends IService<DistributorsEntity> {
      * @return 删除结果
      */
     boolean deleteBatch(Integer[] ids);
+
+    boolean updateState(DistributorsEntity distributors);
 }

@@ -8,13 +8,19 @@
       </navigator>
     </swiper-item>
   </swiper> -->
-<view class="a-section a-topic" wx:if="{{channel.length > 0}}">
+<!-- <view class="a-section a-topic" wx:if="{{channel.length > 0}}">
   <view class="m-menu">
     <navigator  class="item" url="{{item.url}}" wx:for="{{channel}}" wx:key="{{item.id}}">
       <image src="{{item.icon_url}}" background-size="cover"></image>
       <text>{{item.name}}</text>
     </navigator>
   </view>
+ </view> -->
+ <view>
+    1111
+ </view>
+ <view>
+    搜素
  </view>
 
 <!-- <view class="a-section a-topic" wx:if="{{brand.length > 0}}">

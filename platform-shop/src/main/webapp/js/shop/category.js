@@ -12,7 +12,7 @@ function initialPage() {
 function getGrid() {
     var colunms = TreeGrid.initColumn();
     var table = new TreeTable(TreeGrid.id, '../category/queryAll', colunms);
-    table.setExpandColumn(2);
+    table.setExpandColumn(1);
     table.setIdField("id");
     table.setCodeField("id");
     table.setParentCodeField("parentId");
@@ -34,11 +34,11 @@ var TreeGrid = {
 TreeGrid.initColumn = function () {
     var columns = [
         {field: 'selectItem', radio: true},
-        {title: 'id', field: 'id', align: 'id', width: '50px'},
+        /*{title: 'id', field: 'id', align: 'id', width: '50px', key: true, hidden: true},*/
         {title: '分类名称', field: 'name', align: 'center', valign: 'middle', width: '100px'},
         {title: '描述', field: 'frontDesc', align: 'center', valign: 'middle', width: '150px'},
-        {title: '首页展示', field: 'showIndex', align: 'center', valign: 'middle', width: '50px'},
-        {
+        /*{title: '首页展示', field: 'showIndex', align: 'center', valign: 'middle', width: '50px'},*/
+       /* {
             title: '显示',
             field: 'isShow',
             align: 'center',
@@ -47,9 +47,10 @@ TreeGrid.initColumn = function () {
             formatter: function (item, index) {
                 return transIsNot(item.show)
             }
-        },
+        },*/
         // {title: '类型', field: 'type', align: 'center', valign: 'middle', width: '50px'},
-        {title: '级别', field: 'level', align: 'center', valign: 'middle', width: '50px'}]
+        // {title: '级别', field: 'level', align: 'center', valign: 'middle', width: '50px'}
+        ]
     return columns;
 };
 

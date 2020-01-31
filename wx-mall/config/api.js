@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:8082/platform-framework/api/';
+const API_BASE_URL = 'http://localhost:8080/platform-framework/api/';
 module.exports = {
     IndexUrlNewGoods: API_BASE_URL + 'index/newGoods', //新品首发
     IndexUrlHotGoods: API_BASE_URL + 'index/hotGoods', //热卖商品
@@ -6,6 +6,10 @@ module.exports = {
     IndexUrlBrand: API_BASE_URL + 'index/brand', //品牌制造商
     IndexUrlCategory: API_BASE_URL + 'index/category', //首页底部的分类及商品列表
     IndexUrlBanner: API_BASE_URL + 'index/banner', //首页banner
+
+    //首页banner 新加
+    IndexUrlDistrabutorBanner: API_BASE_URL + 'distrabutor/getDistrabutorInfo', 
+
     IndexUrlChannel: API_BASE_URL + 'index/channel', //banner下的分类
     CatalogList: API_BASE_URL + 'catalog/index',  //分类目录全部分类数据接口
     CatalogCurrent: API_BASE_URL + 'catalog/current',  //分类目录当前分类数据接口

@@ -6,8 +6,8 @@ $(function () {
             {label: '商品类型', name: 'categoryName', index: 'category_id', width: 80},
             {label: '商品序列号', name: 'goodsSn', index: 'goods_sn', width: 80, hidden: true},
             {label: '名称', name: 'name', index: 'name', width: 160},
-            {label: '品牌', name: 'brandName', index: 'brand_id', width: 120},
-            {label: '关键字', name: 'keywords', index: 'keywords', width: 80, hidden: true},
+            {label: '品牌', name: 'brandName', index: 'brand_id', width: 120, hidden: true},
+            {label: '关键字', name: 'keywords', index: 'keywords', width: 80, hidden: true, hidden: true},
             {label: '简明介绍', name: 'goodsBrief', index: 'goods_brief', width: 80, hidden: true},
             {label: '商品描述', name: 'goodsDesc', index: 'goods_desc', width: 80, hidden: true},
             {
@@ -22,7 +22,7 @@ $(function () {
                 }
             },
             {label: '删除状态', name: 'isDelete', index: 'is_delete', width: 80, hidden: true},
-            {label: '属性类别', name: 'attributeCategoryName', index: 'attribute_category', width: 80},
+            {label: '属性类别', name: 'attributeCategoryName', hidden: true, index: 'attribute_category', width: 80},
             {label: '是否新商品', name: 'isNew', index: 'is_new', width: 80, hidden: true},
             {label: '商品单位', name: 'goodsUnit', index: 'goods_unit', width: 80},
             {label: '商品主图', name: 'primaryPicUrl', index: 'primary_pic_url', width: 80, hidden: true},
@@ -35,12 +35,12 @@ $(function () {
             {label: '推广描述', name: 'promotionDesc', index: 'promotion_desc', width: 80, hidden: true},
             {label: '推广标签', name: 'promotionTag', index: 'promotion_tag', width: 80, hidden: true},
             {
-                label: '限购', name: 'isLimited', index: 'is_limited', width: 80, formatter: function (value) {
+                label: '限购', name: 'isLimited', index: 'is_limited', width: 80, hidden: true, formatter: function (value) {
                     return transIsNot(value);
                 }
             },
             {
-                label: '热销', name: 'isHot', index: 'is_hot', width: 80, formatter: function (value) {
+                label: '热销', name: 'isHot', index: 'is_hot', width: 80, hidden: true, formatter: function (value) {
                     return transIsNot(value);
                 }
             }]

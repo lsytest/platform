@@ -6,14 +6,12 @@
     <sql id="selectSql">
         SELECT
         T.id,
-        T.member_id,
         T.name,
         T.description,
         T.image,
         T.address,
-        T.puchase_num,
-        T.fans_num,
         T.parent_id,
+        T.state,
         T.create_time
         FROM specific_distributors T
         WHERE 1=1
@@ -25,6 +23,14 @@
     <select id="selectDistributorsPage" resultType="com.platform.entity.DistributorsEntity">
         <include refid="selectSql"/>
     </select>
+
+    <update id="updateState" parameterType="com.platform.entity.DistributorsEntity">
+        update specific_distributors set state=#{state}
+        where id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
 
     <select id="queryAll" resultType="com.platform.entity.DistributorsEntity">
         <include refid="selectSql"/>

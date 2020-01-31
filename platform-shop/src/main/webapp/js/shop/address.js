@@ -1,6 +1,6 @@
 $(function () {
-    let userId = getQueryString("userId");
-    let url = '../address/list';
+    var userId = getQueryString("userId");
+    var url = '../address/list';
     if (userId) {
         url += '?userId=' + userId;
     }
@@ -53,7 +53,7 @@ var vm = new Vue({
             confirm('确定要删除选中的记录？', function () {
                 Ajax.request({
                     type: "POST",
-                    url: "../address/delete",
+                    url: "../address/devare",
                     contentType: "application/json",
                     params: JSON.stringify(ids),
                     successCallback: function () {
