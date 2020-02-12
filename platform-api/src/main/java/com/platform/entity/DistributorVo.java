@@ -12,6 +12,8 @@ package com.platform.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -21,10 +23,11 @@ import java.util.List;
 /**
  * 实体
  *
- * @author lipengjun
+ * @author lsy
  * @date 2020-01-20 20:28:54
  */
 @TableName("specific_distributors")
+@ApiModel(value="分销商对象",description="分销商对象信息")
 public class DistributorVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -32,32 +35,39 @@ public class DistributorVo implements Serializable {
      * 
      */
     @TableId
+    @ApiModelProperty(value="分销商ID")
     private Integer id;
     /**
      * 分销商名称
      */
+    @ApiModelProperty(value="分销商名称")
     private String name;
     /**
      * 分销商描述
      */
+    @ApiModelProperty(value="分销商描述")
     private String description;
     /**
      * 分销商图标
      */
+    @ApiModelProperty(value="分销商图标")
     private String image;
     /**
      * 分销商地址
      */
+    @ApiModelProperty(value="分销商地址")
     private String address;
     /**
      * 父级ID
      */
+    @ApiModelProperty(value="父级ID")
     private Integer parentId;
     /**
      * 创建时间
      */
+    @ApiModelProperty(value="创建时间")
     private Date createTime;
-
+    @ApiModelProperty(value="'1=未审核；2=审核成功；3=审核失败")
     private Integer state;
 
     private List ids;

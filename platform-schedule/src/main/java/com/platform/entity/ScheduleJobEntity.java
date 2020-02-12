@@ -15,7 +15,6 @@ import java.util.Date;
  * @email 939961241@qq.com
  * @date 2016年11月28日 下午12:54:44
  */
-@Data
 @TableName("SCHEDULE_JOB")
 public class ScheduleJobEntity implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -68,4 +67,72 @@ public class ScheduleJobEntity implements Serializable {
      * 创建时间
      */
     private Date createTime;
+
+    public static String getJobParamKey() {
+        return JOB_PARAM_KEY;
+    }
+
+    public Long getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(Long jobId) {
+        this.jobId = jobId;
+    }
+
+    public String getBeanName() {
+        return beanName;
+    }
+
+    public void setBeanName(String beanName) {
+        this.beanName = beanName;
+    }
+
+    public String getMethodName() {
+        return methodName;
+    }
+
+    public void setMethodName(String methodName) {
+        this.methodName = methodName;
+    }
+
+    public String getParams() {
+        return params;
+    }
+
+    public void setParams(String params) {
+        this.params = params;
+    }
+
+    public String getCronExpression() {
+        return cronExpression;
+    }
+
+    public void setCronExpression(String cronExpression) {
+        this.cronExpression = cronExpression;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 }

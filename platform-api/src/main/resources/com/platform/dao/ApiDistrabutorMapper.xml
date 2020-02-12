@@ -32,7 +32,7 @@
     </select>
 
     <insert id="save" parameterType="com.platform.entity.DistributorVo">
-        insert into(name,description,image,address,parent_id,create_time,state) specific_distributors
+        insert into specific_distributors(name,description,image,address,parent_id,create_time,state)
         values(#{name}, #{description}, #{image}, #{address}, #{parentId},#{createTime},#{state})
     </insert>
 
