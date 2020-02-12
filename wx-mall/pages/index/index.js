@@ -17,7 +17,7 @@ Page({
   onShareAppMessage: function () {
     return {
       title: 'NideShop',
-      desc: '仿网易严选微信小程序商城',
+      desc: '雅安尤佳微信小程序商城',
       path: '/pages/index/index'
     }
   },onPullDownRefresh(){
@@ -54,11 +54,13 @@ Page({
       }
     });
     */
-    util.request(api.IndexUrlDistrabutorBanner).then(function(res){
+    var indexUrlDistrabutorBanner = api.IndexUrlDistrabutorBanner + "/1";
+    util.request(indexUrlDistrabutorBanner,{},'GET').then(function(res){
       if (res.errno===0){
-
+        data.distrabutorInfo = res.data.list;
+        that.setData(data);
       }
-    })
+    });
     util.request(api.GoodsList).then(function (res) {
       if (res.errno === 0) {
         data.goodsList = res.data.goodsList

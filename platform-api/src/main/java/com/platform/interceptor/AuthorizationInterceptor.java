@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 权限(Token)验证
  *
- * @author lipengjun
+ * @author lsy
  * @email 939961241@qq.com
  * @gitee https://gitee.com/fuyang_lipengjun/platform
  * @date 2017-03-23 15:38

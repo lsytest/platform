@@ -52,6 +52,12 @@
       </navigator>
     </view>-->
     <view class="item item-bottom">
+      <navigator url="/pages/ucenter/distributors/distributors" class="a">
+        <text class="icon kefu"></text>
+        <text class="txt">分销商申请</text>
+      </navigator>
+    </view>
+    <view class="item item-bottom">
       <navigator url="/pages/ucenter/feedback/feedback" class="a">
         <text class="icon feedback"></text>
         <text class="txt">意见反馈</text>

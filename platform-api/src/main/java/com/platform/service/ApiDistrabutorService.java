@@ -25,7 +25,7 @@ public class ApiDistrabutorService {
     }
 
 
-    public DistributorVo getDistrabutorInfo(Integer distrabutorId){
+    public DistributorVo getDistrabutorInfo(Integer distrabutorId) throws Exception{
         return apiDistrabutorMapper.queryObject(distrabutorId);
     }
 
@@ -33,7 +33,7 @@ public class ApiDistrabutorService {
         return apiDistrabutorMapper.queryList(null);
     }
 
-    public Map getBannerInfo(Integer distrabutorId){
+    public Map getBannerInfo(Integer distrabutorId) throws Exception{
         Map<String, Object> resultMap = new HashMap<String, Object>();
         DistributorVo distributorVo = getDistrabutorInfo(distrabutorId);
         resultMap.put("image", distributorVo.getImage());

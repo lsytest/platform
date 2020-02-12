@@ -11,7 +11,7 @@ import java.util.Map;
 
 
 /**
- * @author lipengjun
+ * @author lsy
  * @email 939961241@qq.com
  * @date 2017-08-15 08:03:40
  */
@@ -24,6 +24,8 @@ public class OrderVo implements Serializable {
     private String order_sn;
     //会员Id
     private Long user_id;
+    //分销商ID
+    private Integer distrabutorId;
     /*
     订单状态
     1xx 表示订单取消和删除等状态 0订单创建成功等待付款，　101订单已取消，　102订单已删除
@@ -516,5 +518,13 @@ public class OrderVo implements Serializable {
 
     public void setShipping_no(String shipping_no) {
         this.shipping_no = shipping_no;
+    }
+
+    public Integer getDistrabutorId() {
+        return distrabutorId;
+    }
+
+    public void setDistrabutorId(Integer distrabutorId) {
+        this.distrabutorId = distrabutorId;
     }
 }

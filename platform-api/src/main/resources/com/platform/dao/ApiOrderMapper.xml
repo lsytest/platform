@@ -8,6 +8,8 @@
         <result property="id" column="id"/>
         <result property="order_sn" column="order_sn"/>
         <result property="user_id" column="user_id"/>
+        <!-- 新增 -->
+        <result property="distrabutorId" column="distrabutor_id"/>
         <result property="order_status" column="order_status"/>
         <result property="shipping_status" column="shipping_status"/>
         <result property="pay_status" column="pay_status"/>
@@ -60,6 +62,9 @@
         <where>
             <if test="user_id != null">
                 and user_id = #{user_id}
+            </if>
+            <if test="distrabutorId!=null and distrabutorId!=''">
+                and distrabutor_id=#{distrabutorId}
             </if>
         </where>
         <choose>

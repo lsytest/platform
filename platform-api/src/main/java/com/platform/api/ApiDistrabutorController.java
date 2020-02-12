@@ -1,7 +1,10 @@
 package com.platform.api;
 
+import com.platform.annotation.IgnoreAuth;
 import com.platform.entity.DistributorVo;
+import com.platform.entity.OrderVo;
 import com.platform.service.ApiDistrabutorService;
+import com.platform.service.ApiOrderService;
 import com.platform.util.ApiBaseAction;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +16,14 @@ import java.util.Map;
 
 @Api(tags = "分销商")
 @RestController
-    @RequestMapping("/api/distrabutor")
+@RequestMapping("/api/distrabutor")
 public class ApiDistrabutorController extends ApiBaseAction {
 
     @Autowired
-    ApiDistrabutorService apiDistrabutorService;
+    private ApiDistrabutorService apiDistrabutorService;
+
+    @Autowired
+    private ApiOrderService apiOrderService;
 
     /**
      * 保存或更新分销商
@@ -25,7 +31,8 @@ public class ApiDistrabutorController extends ApiBaseAction {
      * @return
      */
     @PostMapping("saveOrUpdateDistrabutorInfo")
-    public Object saveDistrabutorInfo(DistributorVo distributorVo){
+    @IgnoreAuth
+    public Object saveDistrabutorInfo(@RequestBody DistributorVo distributorVo){
         String message = distributorVo.getId()!=null?"保存分销商":"更新分销商";
         try{
             apiDistrabutorService.saveOrUpdateDistrabutorInfo(distributorVo);
@@ -40,6 +47,7 @@ public class ApiDistrabutorController extends ApiBaseAction {
      * @return
      */
     @GetMapping("list")
+    @IgnoreAuth
     public Object distrabutorList(){
         try{
             List<DistributorVo> distributorVoList = apiDistrabutorService.getDistrabutorList();
@@ -54,8 +62,9 @@ public class ApiDistrabutorController extends ApiBaseAction {
      * @param distrabutorId
      * @return
      */
-    @GetMapping("getDistrabutorInfo")
-    public Object getDistrabutorInfo(@RequestParam("distrabutorId") Integer distrabutorId){
+    @GetMapping("getDistrabutorInfo/{distrabutorId}")
+    @IgnoreAuth
+    public Object getDistrabutorInfo(@PathVariable("distrabutorId") Integer distrabutorId){
         DistributorVo distributorVo = null;
         try{
             distributorVo = apiDistrabutorService.getDistrabutorInfo(distrabutorId);
@@ -70,11 +79,17 @@ public class ApiDistrabutorController extends ApiBaseAction {
      * @param distrabutorId 分销商Id
      * @return
      */
-    @GetMapping("getDistrabutorOrder")
+    @GetMapping("getDistrabutorOrder/{distrabutorId}")
+    @IgnoreAuth
     public Object getDistrabutorOrder(@RequestParam("distrabutorId") Integer distrabutorId){
-
-
-        return null;
+        Map<String, Object> paraMap = new HashMap<String, Object>();
+        paraMap.put("distrabutorId", distrabutorId);
+        try{
+            List<OrderVo> resultList = apiOrderService.queryList(paraMap);
+            return toResponsSuccessForSelect(resultList);
+        }catch (Exception e){
+            return toResponsFail("获取分销商订单列表失败");
+        }
     }
 
     /**
@@ -82,14 +97,15 @@ public class ApiDistrabutorController extends ApiBaseAction {
      * @param distrabutorId
      * @return
      */
-    @GetMapping("getDistrabutorInfo")
-    public Object getDistrabutorBanner(@RequestParam("distrabutorId") Integer distrabutorId){
+    @GetMapping("getDistrabutorBanner/{distrabutorId}")
+    @IgnoreAuth
+    public Object getDistrabutorBanner(@PathVariable("distrabutorId") Integer distrabutorId){
 
         try{
             Map resultMap = apiDistrabutorService.getBannerInfo(distrabutorId);
             return toResponsSuccessForSelect(resultMap);
         }catch (Exception e){
-            return toResponsFail("获取首页banner信息失败");
+            return toResponsFail("获取首页banner信息失败:"+e.getMessage());
         }
     }
 }

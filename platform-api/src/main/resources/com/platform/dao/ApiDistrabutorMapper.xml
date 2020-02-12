@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.platform.dao.ApiDistrabutorMapper">
-
     <resultMap type="com.platform.entity.DistributorVo" id="distrabutorMap">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
@@ -14,10 +13,87 @@
         <result property="state" column="state"/>
     </resultMap>
 
-    <select id="queryBannerTotal" parameterType="string" resultType="hashmap">
-        select count(distinct user_id) as fansNum from nideshop_order where distrabutor_id=#{distrabutorId}
-        union
-        select count(order_sn) as buyNum from nideshop_order where distrabutor_id=#{distrabutorId} and pay_status=2
+    <sql id="sqlContent">
+        id,name,description,image,address,parent_id,create_time,state
+    </sql>
+
+    <select id="queryObject" resultMap="distrabutorMap">
+        select <include refid="sqlContent"/> from specific_distributors
+        <where>
+            id=#{value}
+        </where>
     </select>
 
+    <select id="queryBannerTotal" parameterType="integer" resultType="map">
+        select
+            (select count(distinct user_id) from nideshop_order) as fansNum,
+            (select count(order_sn) from nideshop_order where pay_status=2) as buyNum
+        from nideshop_order where distrabutor_id=#{distrabutorId}
+    </select>
+
+    <insert id="save" parameterType="com.platform.entity.DistributorVo">
+        insert into(name,description,image,address,parent_id,create_time,state) specific_distributors
+        values(#{name}, #{description}, #{image}, #{address}, #{parentId},#{createTime},#{state})
+    </insert>
+
+    <update id="update" parameterType="com.platform.entity.DistributorVo">
+        update specific_distributors set id=#{id}
+        <if test="name!=null and name.trim()!=''">
+        ,name=#{name}
+    </if>
+        <if test="description!=null and description.trim()!=''">
+            ,description=#{description}
+        </if>
+        <if test="image!=null and image.trim()!=''">
+            ,image=#{image}
+        </if>
+        <if test="address!=null and address.trim()!=''">
+            ,address=#{address}
+        </if>
+        <if test="parentId!=null and parentId.trim()!=''">
+            ,parent_id=#{parentId}
+        </if>
+        <if test="createTime!=null and createTime.trim()!=''">
+            ,create_time=#{createTime}
+        </if>
+        <if test="state!=null and state.trim()!=''">
+            ,state=#{state}
+        </if>
+        <where>
+            id=#{id}
+        </where>
+    </update>
+
+    <select id="queryList" parameterType="hashmap" resultMap="distrabutorMap">
+        select
+            <include refid="sqlContent"></include>
+        from specific_distributors
+        <where>
+            1=1
+            <if test="id!=null and id!=''">
+                and id=#{id}
+            </if>
+            <if test="name!=null and name.trim()!=''">
+                and name like concat('%', #{name}, '%')
+            </if>
+            <if test="description!=null and description.trim()!=''">
+                and description=#{description}
+            </if>
+            <if test="image!=null and image.trim()!=''">
+                and image=#{image}
+            </if>
+            <if test="address!=null and address.trim()!=''">
+                and address=#{address}
+            </if>
+            <if test="parentId!=null and parentId.trim()!=''">
+                and parent_id=#{parentId}
+            </if>
+            <if test="createTime!=null and createTime.trim()!=''">
+                and create_time=#{createTime}
+            </if>
+            <if test="state!=null and state.trim()!=''">
+                and state=#{state}
+            </if>
+        </where>
+    </select>
 </mapper>

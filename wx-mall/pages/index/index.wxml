@@ -17,10 +17,14 @@
   </view>
  </view> -->
  <view>
-    1111
+    图片：{{distrabutorInfo.image}}
+    标题：{{distrabutorInfo.name}}
+    描述：{{distrabutorInfo.description}}
+    粉丝数：{{distrabutorInfo.fansNum}}
+    购买数：{{distrabutorInfo.buyNum}}
  </view>
  <view>
-    搜素
+    <input type="text" style="border:1px solid black;" placeholder="请输入要搜素的商品"/>
  </view>
 
 <!-- <view class="a-section a-topic" wx:if="{{brand.length > 0}}">

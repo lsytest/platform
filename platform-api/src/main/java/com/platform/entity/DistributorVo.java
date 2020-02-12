@@ -24,7 +24,6 @@ import java.util.List;
  * @author lipengjun
  * @date 2020-01-20 20:28:54
  */
-@Data
 @TableName("specific_distributors")
 public class DistributorVo implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -62,4 +61,76 @@ public class DistributorVo implements Serializable {
     private Integer state;
 
     private List ids;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public List getIds() {
+        return ids;
+    }
+
+    public void setIds(List ids) {
+        this.ids = ids;
+    }
 }

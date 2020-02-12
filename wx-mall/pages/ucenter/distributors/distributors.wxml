@@ -1,0 +1,9 @@
+<view class="container">
+
+  上级分销商：<input type='text' value="{{itme.parentId}}" placeholder=""/>
+ <input type='text' value="{{itme.name}}" class="inputtext" placeholder="请输入标题"/>
+ <textarea class="inputtext" placeholder="请输入您的描述"></textarea>
+  上传照片：<input type="file"/>
+  <input type="text" class="inputtext" value="{{itme.address}}"/>
+  <view class="fb-btn" bindtap="sbmitFeedback">提交</view>
+</view>
