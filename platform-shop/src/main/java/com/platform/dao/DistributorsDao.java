@@ -46,4 +46,6 @@ public interface DistributorsDao extends BaseMapper<DistributorsEntity> {
     List<DistributorsEntity> selectDistributorsPage(IPage page, @Param("params") Map<String, Object> params);
 
     Integer updateState(DistributorsEntity distributors);
+
+    DistributorsEntity selectOne(@Param("id") Integer id);
 }

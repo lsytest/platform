@@ -412,6 +412,20 @@ public class OrderVo implements Serializable {
                     order_status_text = "未付款";
                     break;
                 case 201:
+                    order_status_text = "已付款";
+                    break;
+                case 101:
+                    order_status_text = "已取消";
+                    break;
+                case 401:
+                    order_status_text = "已退款";
+                    break;
+            }
+            /*switch (order_status) {
+                case 0:
+                    order_status_text = "未付款";
+                    break;
+                case 201:
                     order_status_text = "等待发货";
                     break;
                 case 300:
@@ -432,7 +446,7 @@ public class OrderVo implements Serializable {
                 case 402:
                     order_status_text = "已退货";
                     break;
-            }
+            }*/
         }
         return order_status_text;
     }

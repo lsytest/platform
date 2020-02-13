@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.platform.entity.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,14 +20,6 @@ import com.platform.dao.ApiCartMapper;
 import com.platform.dao.ApiCouponMapper;
 import com.platform.dao.ApiOrderGoodsMapper;
 import com.platform.dao.ApiOrderMapper;
-import com.platform.entity.AddressVo;
-import com.platform.entity.BuyGoodsVo;
-import com.platform.entity.CartVo;
-import com.platform.entity.CouponVo;
-import com.platform.entity.OrderGoodsVo;
-import com.platform.entity.OrderVo;
-import com.platform.entity.ProductVo;
-import com.platform.entity.UserVo;
 import com.platform.util.CommonUtil;
 
 
@@ -46,6 +39,9 @@ public class ApiOrderService {
     private ApiOrderGoodsMapper apiOrderGoodsMapper;
     @Autowired
     private ApiProductService productService;
+    @Autowired
+    private ApiGoodsService goodsService;
+
 
     public OrderVo queryObjectByOrderSn(String orderSn) {
         return orderDao.queryObjectByOrderSn(orderSn);
@@ -121,14 +117,22 @@ public class ApiOrderService {
         } else {
             BuyGoodsVo goodsVo = (BuyGoodsVo) J2CacheUtils.get(J2CacheUtils.SHOP_CACHE_NAME, "goods" + loginUser.getUserId());
             ProductVo productInfo = productService.queryObject(goodsVo.getProductId());
+            GoodsVo goodsInfo = goodsService.queryObject(goodsVo.getGoodsId());
             //计算订单的费用
             //商品总价
-            goodsTotalPrice = productInfo.getRetail_price().multiply(new BigDecimal(goodsVo.getNumber()));
+            goodsTotalPrice = goodsInfo.getRetail_price().multiply(new BigDecimal(goodsVo.getNumber()));
 
             CartVo cartVo = new CartVo();
-            BeanUtils.copyProperties(productInfo, cartVo);
+//            BeanUtils.copyProperties(goodsInfo, cartVo);
             cartVo.setNumber(goodsVo.getNumber());
-            cartVo.setProduct_id(goodsVo.getProductId());
+//            cartVo.setProduct_id(goodsVo.getProductId());
+            cartVo.setList_pic_url(goodsInfo.getList_pic_url());
+            cartVo.setGoods_id(goodsInfo.getId());
+            cartVo.setNumber(goodsInfo.getGoods_number());
+            cartVo.setMarket_price(goodsInfo.getMarket_price());
+            cartVo.setRetail_price(goodsInfo.getRetail_price());
+            cartVo.setGoods_name(goodsInfo.getName());
+
             checkedGoodsList.add(cartVo);
         }
 

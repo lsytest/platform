@@ -52,6 +52,10 @@ public class OrderController {
     @RequiresPermissions("order:info")
     public R info(@PathVariable("id") Integer id) {
         OrderEntity order = orderService.queryObject(id);
+        // 根据分销商ID获取分销商名称
+        DistributorsEntity distributors = distributorsService.selectOne(order.getDistrabutorId());
+        String distrabutorName = distributors!=null?distributors.getName():"";
+        order.setDistrabutorName(distrabutorName);
 
         return R.ok().put("order", order);
     }

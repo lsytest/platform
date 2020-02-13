@@ -43,19 +43,19 @@ $(function () {
                 }
             },*/
             {
-                label: '订单状态', name: 'orderStatus', index: 'order_status', width: 80, formatter: function (value) {
+                label: '订单状态', name: 'orderStatus', index: 'order_status', width: 40, formatter: function (value) {
                     if (value == '0') {
                         return '待付款';
                     } else if (value == '101') {
-                        return '订单已取消';
+                        return '已取消';
                     } else if (value == '102') {
-                        return '订单已删除';
+                        return '已删除';
                     } else if (value == '201') {
-                        return '订单已付款';
+                        return '已付款';
                     } else if (value == '300') {
-                        return '订单已发货';
+                        return '已发货';
                     } else if (value == '301') {
-                        return '用户确认收货';
+                        return '确认收货';
                     } else if (value == '401') {
                         return '退款';
                     } else if (value == '402') {
@@ -64,7 +64,7 @@ $(function () {
                     return value;
                 }
             },
-            {
+            /*{
                 label: '发货状态',
                 name: 'shippingStatus',
                 index: 'shipping_status',
@@ -81,9 +81,9 @@ $(function () {
                     }
                     return value;
                 }
-            },
+            },*/
             {
-                label: '付款状态', name: 'payStatus', index: 'pay_status', width: 80,
+                label: '付款状态', name: 'payStatus', index: 'pay_status', width: 40,
                 formatter: function (value) {
                     if (value == '0') {
                         return '未付款';
@@ -95,11 +95,11 @@ $(function () {
                     return value;
                 }
             },
-            {label: '快递公司', name: 'shippingName', index: 'shipping_name', width: 80},
-            {label: '快递单号', name: 'shippingNo', index: 'shipping_No', width: 80},
-            {label: '实际支付金额', name: 'actualPrice', index: 'actual_price', width: 80},
-            {label: '订单总价', name: 'orderPrice', index: 'order_price', width: 60},
-            {label: '商品总价', name: 'goodsPrice', index: 'goods_price', width: 60},
+           /* {label: '快递公司', name: 'shippingName', index: 'shipping_name', width: 80},
+            {label: '快递单号', name: 'shippingNo', index: 'shipping_No', width: 80},*/
+            /*{label: '实际支付金额', name: 'actualPrice', index: 'actual_price', width: 80},*/
+            {label: '订单总价', name: 'orderPrice', index: 'order_price', width: 40},
+            /*{label: '商品总价', name: 'goodsPrice', index: 'goods_price', width: 60},*/
             {
                 label: '下单时间', name: 'addTime', index: 'add_time', width: 80,
                 formatter: function (value) {

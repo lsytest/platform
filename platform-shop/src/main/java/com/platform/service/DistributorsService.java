@@ -74,4 +74,6 @@ public interface DistributorsService extends IService<DistributorsEntity> {
     boolean deleteBatch(Integer[] ids);
 
     boolean updateState(DistributorsEntity distributors);
+
+    DistributorsEntity selectOne(Integer id);
 }

@@ -40,6 +40,8 @@ public class LoginUserHandlerMethodArgumentResolver implements HandlerMethodArgu
             return null;
         }
 
+        // TODO  测试用户ID固定，未测试
+        object = 3l;
         //获取用户信息
         UserVo user = userService.queryObject((Long) object);
 

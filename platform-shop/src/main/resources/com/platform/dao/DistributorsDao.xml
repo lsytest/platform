@@ -20,6 +20,16 @@
         </if>
     </sql>
 
+    <select id="selectOne" parameterType="integer" resultType="com.platform.entity.DistributorsEntity">
+        select id,name,description,
+        image,address,parent_id,state,
+        create_time
+        FROM specific_distributors
+        <where>
+            id=#{id}
+        </where>
+    </select>
+
     <select id="selectDistributorsPage" resultType="com.platform.entity.DistributorsEntity">
         <include refid="selectSql"/>
     </select>

@@ -2,6 +2,7 @@ package com.platform.service;
 
 import com.platform.dao.ApiDistrabutorMapper;
 import com.platform.entity.DistributorVo;
+import com.platform.utils.ResourceUtil;
 import freemarker.template.SimpleDate;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import java.util.Map;
 @Service
 public class ApiDistrabutorService {
 
-    private static String basePath = "f:/images/";
+    private static String basePath = ResourceUtil.getConfigByName("images.path");
 
     @Autowired
     ApiDistrabutorMapper apiDistrabutorMapper;

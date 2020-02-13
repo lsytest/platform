@@ -156,8 +156,8 @@ public class ApiCartController extends ApiBaseAction {
             return this.toResponsObject(400, "商品已下架", "");
         }
         //取得规格的信息,判断规格库存
-        ProductVo productInfo = productService.queryObject(productId);
-        if (null == productInfo || productInfo.getGoods_number() < number) {
+//        ProductVo productInfo = productService.queryObject(productId);
+        if (null == goodsInfo || goodsInfo.getGoods_number() < number) {
             return this.toResponsObject(400, "库存不足", "");
         }
 
@@ -171,7 +171,7 @@ public class ApiCartController extends ApiBaseAction {
         if (null == cartInfo) {
             //添加操作
             //添加规格名和值
-            String[] goodsSepcifitionValue = null;
+            /*String[] goodsSepcifitionValue = null;
             if (null != productInfo.getGoods_specification_ids() && productInfo.getGoods_specification_ids().length() > 0) {
                 Map specificationParam = new HashMap();
                 String[] idsArray = getSpecificationIdsArray(productInfo.getGoods_specification_ids());
@@ -182,28 +182,28 @@ public class ApiCartController extends ApiBaseAction {
                 for (int i = 0; i < specificationEntities.size(); i++) {
                     goodsSepcifitionValue[i] = specificationEntities.get(i).getValue();
                 }
-            }
+            }*/
             cartInfo = new CartVo();
 
             cartInfo.setGoods_id(goodsId);
             cartInfo.setProduct_id(productId);
-            cartInfo.setGoods_sn(productInfo.getGoods_sn());
+//            cartInfo.setGoods_sn(productInfo.getGoods_sn());
             cartInfo.setGoods_name(goodsInfo.getName());
             cartInfo.setList_pic_url(goodsInfo.getList_pic_url());
             cartInfo.setNumber(number);
             cartInfo.setSession_id("1");
             cartInfo.setUser_id(loginUser.getUserId());
-            cartInfo.setRetail_price(productInfo.getRetail_price());
-            cartInfo.setMarket_price(productInfo.getMarket_price());
-            if (null != goodsSepcifitionValue) {
+            cartInfo.setRetail_price(goodsInfo.getRetail_price());
+            cartInfo.setMarket_price(goodsInfo.getMarket_price());
+            /*if (null != goodsSepcifitionValue) {
                 cartInfo.setGoods_specifition_name_value(StringUtils.join(goodsSepcifitionValue, ";"));
             }
-            cartInfo.setGoods_specifition_ids(productInfo.getGoods_specification_ids());
+            cartInfo.setGoods_specifition_ids(productInfo.getGoods_specification_ids());*/
             cartInfo.setChecked(1);
             cartService.save(cartInfo);
         } else {
             //如果已经存在购物车中，则数量增加
-            if (productInfo.getGoods_number() < (number + cartInfo.getNumber())) {
+            if (goodsInfo.getGoods_number() < (number + cartInfo.getNumber())) {
                 return this.toResponsObject(400, "库存不足", "");
             }
             cartInfo.setNumber(cartInfo.getNumber() + number);
@@ -423,18 +423,24 @@ public class ApiCartController extends ApiBaseAction {
                 }
             }
             goodsTotalPrice = (BigDecimal) ((HashMap) cartData.get("cartTotal")).get("checkedGoodsAmount");
-        } else { // 是直接购买的
+        } else {
+            // 是直接购买的
             BuyGoodsVo goodsVO = (BuyGoodsVo) J2CacheUtils.get(J2CacheUtils.SHOP_CACHE_NAME, "goods" + loginUser.getUserId() + "");
-            ProductVo productInfo = productService.queryObject(goodsVO.getProductId());
+
+            // 根据商品ID获取商品信息
+            GoodsVo goods = goodsService.queryObject(goodsVO.getGoodsId());
+            // ProductVo productInfo = productService.queryObject(goodsVO.getProductId());
+
             //计算订单的费用
             //商品总价
-            goodsTotalPrice = productInfo.getRetail_price().multiply(new BigDecimal(goodsVO.getNumber()));
+//            goodsTotalPrice = productInfo.getRetail_price().multiply(new BigDecimal(goodsVO.getNumber()));
+            goodsTotalPrice = goods.getRetail_price().multiply(new BigDecimal(goodsVO.getNumber()));
 
             CartVo cartVo = new CartVo();
-            cartVo.setGoods_name(productInfo.getGoods_name());
+            cartVo.setGoods_name(goods.getName());
             cartVo.setNumber(goodsVO.getNumber());
-            cartVo.setRetail_price(productInfo.getRetail_price());
-            cartVo.setList_pic_url(productInfo.getList_pic_url());
+            cartVo.setRetail_price(goods.getRetail_price());
+            cartVo.setList_pic_url(goods.getList_pic_url());
             checkedGoodsList.add(cartVo);
         }
 
