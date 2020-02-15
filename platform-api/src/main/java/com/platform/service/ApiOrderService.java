@@ -86,7 +86,7 @@ public class ApiOrderService {
     public Map<String, Object> submit(JSONObject jsonParam, UserVo loginUser) {
         Map<String, Object> resultObj = new HashMap<String, Object>();
 
-        Integer couponId = jsonParam.getInteger("couponId");
+//        Integer couponId = jsonParam.getInteger("couponId");
         String type = jsonParam.getString("type");
         String postscript = jsonParam.getString("postscript");
 //        AddressVo addressVo = jsonParam.getObject("checkedAddress",AddressVo.class);
@@ -98,7 +98,7 @@ public class ApiOrderService {
         // * 获取要购买的商品
         List<CartVo> checkedGoodsList = new ArrayList<>();
         BigDecimal goodsTotalPrice;
-        if (type.equals("cart")) {
+        if ("cart".equals(type)) {
             Map<String, Object> param = new HashMap<String, Object>();
             param.put("user_id", loginUser.getUserId());
             param.put("session_id", 1);
@@ -116,7 +116,7 @@ public class ApiOrderService {
             }
         } else {
             BuyGoodsVo goodsVo = (BuyGoodsVo) J2CacheUtils.get(J2CacheUtils.SHOP_CACHE_NAME, "goods" + loginUser.getUserId());
-            ProductVo productInfo = productService.queryObject(goodsVo.getProductId());
+//            ProductVo productInfo = productService.queryObject(goodsVo.getProductId());
             GoodsVo goodsInfo = goodsService.queryObject(goodsVo.getGoodsId());
             //计算订单的费用
             //商品总价
@@ -138,23 +138,21 @@ public class ApiOrderService {
 
 
         //获取订单使用的优惠券
-        BigDecimal couponPrice = new BigDecimal(0.00);
+        /*BigDecimal couponPrice = new BigDecimal(0.00);
         CouponVo couponVo = null;
         if (couponId != null && couponId != 0) {
             couponVo = apiCouponMapper.getUserCoupon(couponId);
             if (couponVo != null && couponVo.getCoupon_status() == 1) {
                 couponPrice = couponVo.getType_money();
             }
-        }
+        }*/
 
         //订单价格计算
         BigDecimal orderTotalPrice = goodsTotalPrice.add(new BigDecimal(freightPrice)); //订单的总价
 
-        BigDecimal actualPrice = orderTotalPrice.subtract(couponPrice);  //减去其它支付的金额后，要实际支付的金额
+//        BigDecimal actualPrice = orderTotalPrice.subtract(couponPrice);  //减去其它支付的金额后，要实际支付的金额
+//        Long currentTime = System.currentTimeMillis() / 1000;
 
-        Long currentTime = System.currentTimeMillis() / 1000;
-
-        //
         OrderVo orderInfo = new OrderVo();
         orderInfo.setOrder_sn(CommonUtil.generateOrderNumber());
         orderInfo.setUser_id(loginUser.getUserId());
@@ -166,17 +164,20 @@ public class ApiOrderService {
         orderInfo.setCity(addressVo.getCityName());
         orderInfo.setDistrict(addressVo.getCountyName());
         orderInfo.setAddress(addressVo.getDetailInfo());
-        //
         orderInfo.setFreight_price(freightPrice);
         //留言
         orderInfo.setPostscript(postscript);
         //使用的优惠券
-        orderInfo.setCoupon_id(couponId);
-        orderInfo.setCoupon_price(couponPrice);
+//        orderInfo.setCoupon_id(couponId);
+//        orderInfo.setCoupon_price(couponPrice);
+//        orderInfo.setGoods_price(goodsTotalPrice);
+//        orderInfo.setActual_price(actualPrice);
         orderInfo.setAdd_time(new Date());
-        orderInfo.setGoods_price(goodsTotalPrice);
+        // 订单价格
         orderInfo.setOrder_price(orderTotalPrice);
-        orderInfo.setActual_price(actualPrice);
+        //实际支付价格
+        orderInfo.setActual_price(orderTotalPrice);
+
         // 待付款
         orderInfo.setOrder_status(0);
         orderInfo.setShipping_status(0);
@@ -221,17 +222,16 @@ public class ApiOrderService {
         apiCartMapper.deleteByCart(loginUser.getUserId(), 1, 1);
         resultObj.put("errno", 0);
         resultObj.put("errmsg", "订单提交成功");
-        //
         Map<String, OrderVo> orderInfoMap = new HashMap<String, OrderVo>();
         orderInfoMap.put("orderInfo", orderInfo);
-        //
         resultObj.put("data", orderInfoMap);
         // 优惠券标记已用
+        /*
         if (couponVo != null && couponVo.getCoupon_status() == 1) {
             couponVo.setCoupon_status(2);
             apiCouponMapper.updateUserCoupon(couponVo);
         }
-
+        */
         return resultObj;
     }
 

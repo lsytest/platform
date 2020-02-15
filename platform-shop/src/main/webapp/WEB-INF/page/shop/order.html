@@ -18,13 +18,15 @@
                 <i-col span="4">
                     <i-select v-model="q.orderStatus">
                         <i-option value="0">待付款</i-option>
-                        <i-option value="101">订单已取消</i-option>
-                        <i-option value="102">订单已删除</i-option>
-                        <i-option value="201">订单已付款</i-option>
-                        <!--<i-option value="300">订单已发货</i-option>
-                        <i-option value="301">用户确认收货</i-option>-->
+                        <i-option value="101">已取消</i-option>
+                        <i-option value="102">已删除</i-option>
+                        <i-option value="201">已付款</i-option>
                         <i-option value="401">退款</i-option>
+                        <!--
+                        <i-option value="300">订单已发货</i-option>
+                        <i-option value="301">用户确认收货</i-option>
                         <i-option value="402">完成</i-option>
+                        -->
                     </i-select>
                 </i-col>
                 <!--<i-col span="4">
@@ -108,18 +110,19 @@
                     <Radio label="201" disabled>
                         <span>已付款</span>
                     </Radio>
-                   <!-- <Radio label="300" disabled>
+
+                    <Radio label="401" disabled>
+                        <span>退款</span>
+                    </Radio>
+                    <!-- <Radio label="300" disabled>
                         <span>订单已发货</span>
                     </Radio>
                     <Radio label="301" disabled>
                         <span>用户确认收货</span>
-                    </Radio>-->
-                    <Radio label="401" disabled>
-                        <span>退款</span>
                     </Radio>
                     <Radio label="402" disabled>
                         <span>完成</span>
-                    </Radio>
+                    </Radio>-->
                 </Radio-group>
             </Form-item>
             <!--

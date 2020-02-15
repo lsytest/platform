@@ -9,6 +9,7 @@ import com.platform.entity.UserVo;
 import com.platform.service.ApiOrderGoodsService;
 import com.platform.service.ApiOrderService;
 import com.platform.util.ApiBaseAction;
+import com.platform.util.CommonUtil;
 import com.platform.util.wechat.WechatRefundApiResult;
 import com.platform.util.wechat.WechatUtil;
 import com.platform.utils.*;
@@ -64,7 +65,7 @@ public class ApiPayController extends ApiBaseAction {
             return toResponsObject(400, "订单已取消", "");
         }
 
-        if (orderInfo.getPay_status() != 0) {
+        if(orderInfo.getPay_status() == 2){
             return toResponsObject(400, "订单已支付，请不要重复操作", "");
         }
 
@@ -82,7 +83,9 @@ public class ApiPayController extends ApiBaseAction {
             // 随机字符串
             parame.put("nonce_str", randomStr);
             // 商户订单编号
-            parame.put("out_trade_no", orderInfo.getOrder_sn());
+            String orderSn = CommonUtil.generateOrderNumber();
+            parame.put("out_trade_no", orderSn);
+            J2CacheUtils.put("orderSn", orderSn);
             Map orderGoodsParam = new HashMap();
             orderGoodsParam.put("order_id", orderId);
             // 商品描述
@@ -113,12 +116,11 @@ public class ApiPayController extends ApiBaseAction {
             parame.put("sign", sign);
 
             String xml = MapUtils.convertMap2Xml(parame);
-            logger.info("xml:" + xml);
+//            logger.info("xml:" + xml);
             Map<String, Object> resultUn = XmlUtil.xmlStrToMap(WechatUtil.requestOnce(ResourceUtil.getConfigByName("wx.uniformorder"), xml));
             // 响应报文
             String return_code = MapUtils.getString("return_code", resultUn);
             String return_msg = MapUtils.getString("return_msg", resultUn);
-            //
             if (return_code.equalsIgnoreCase("FAIL")) {
                 return toResponsFail("支付失败," + return_msg);
             } else if (return_code.equalsIgnoreCase("SUCCESS")) {
@@ -137,10 +139,10 @@ public class ApiPayController extends ApiBaseAction {
                     resultObj.put("signType", "MD5");
                     String paySign = WechatUtil.arraySign(resultObj, ResourceUtil.getConfigByName("wx.paySignKey"));
                     resultObj.put("paySign", paySign);
-                    // 业务处理
-                    orderInfo.setPay_id(prepay_id);
+
                     // 付款中
                     orderInfo.setPay_status(1);
+                    orderInfo.setPay_id(prepay_id);
                     orderService.update(orderInfo);
                     return toResponsObject(0, "微信统一订单下单成功", resultObj);
                 }
@@ -171,7 +173,8 @@ public class ApiPayController extends ApiBaseAction {
         // 随机字符串
         parame.put("nonce_str", randomStr);
         // 商户订单编号
-        parame.put("out_trade_no", orderDetail.getOrder_sn());
+        String orderSn = (String) J2CacheUtils.get("orderSn");
+        parame.put("out_trade_no", orderSn);
 
         String sign = WechatUtil.arraySign(parame, ResourceUtil.getConfigByName("wx.paySignKey"));
         // 数字签证
@@ -229,7 +232,7 @@ public class ApiPayController extends ApiBaseAction {
 
     /**
      * 微信订单回调接口
-     *
+     * TODO 测试回调函数，修改状态
      * @return
      */
     @ApiIgnore
@@ -237,6 +240,7 @@ public class ApiPayController extends ApiBaseAction {
     @RequestMapping(value = "/notify", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
     public void notify(HttpServletRequest request, HttpServletResponse response) {
         try {
+            System.out.println("===========order start===========");
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/html;charset=UTF-8");
@@ -273,6 +277,7 @@ public class ApiPayController extends ApiBaseAction {
                 orderService.update(orderInfo);
                 response.getWriter().write(setXml("SUCCESS", "OK"));
             }
+            System.out.println("===========order end===========");
         } catch (Exception e) {
             e.printStackTrace();
             return;
