@@ -6,6 +6,7 @@ import com.platform.cache.J2CacheUtils;
 import com.platform.entity.OrderGoodsVo;
 import com.platform.entity.OrderVo;
 import com.platform.entity.UserVo;
+import com.platform.service.ApiDistrabutorService;
 import com.platform.service.ApiOrderGoodsService;
 import com.platform.service.ApiOrderService;
 import com.platform.util.ApiBaseAction;
@@ -17,6 +18,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -42,6 +44,9 @@ public class ApiPayController extends ApiBaseAction {
     private ApiOrderService orderService;
     @Autowired
     private ApiOrderGoodsService orderGoodsService;
+    @Autowired
+    private ApiDistrabutorService apiDistrabutorService;
+
 
     /**
      */
@@ -199,6 +204,9 @@ public class ApiPayController extends ApiBaseAction {
 
         String trade_state = MapUtils.getString("trade_state", resultUn);
         if ("SUCCESS".equals(trade_state)) {
+            // 支付成功后，对该分销商上级分销商分钱
+            apiDistrabutorService.dividMoney(1, orderDetail.getOrder_price().doubleValue());
+
             // 更改订单状态
             // 业务处理
             OrderVo orderInfo = new OrderVo();
@@ -320,6 +328,15 @@ public class ApiPayController extends ApiBaseAction {
         } else {
             return toResponsObject(400, "退款失败", "");
         }
+    }
+
+    @GetMapping("test/{id}")
+    @IgnoreAuth
+    public Object test(@PathVariable("id") Integer id){
+
+        apiDistrabutorService.dividMoney(id, 100);
+
+        return toResponsMsgSuccess("返回成功");
     }
 
 

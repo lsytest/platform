@@ -1,21 +1,20 @@
 package com.platform.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.platform.dao.ApiDistrabutorMapper;
 import com.platform.entity.DistributorVo;
 import com.platform.utils.ResourceUtil;
 import freemarker.template.SimpleDate;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ApiDistrabutorService {
@@ -88,4 +87,44 @@ public class ApiDistrabutorService {
         return resultMap;
     }
 
+    /**
+     * 对分销商划分钱
+     * @param distributorId 分销商ID
+     * @param money 支付的费用
+     * @return
+     */
+    @Async
+    public void dividMoney(Integer distributorId, double money){
+        List<DistributorVo> tempList = new ArrayList<DistributorVo>();
+        for (int i = 0; i < 3; i++) {
+            DistributorVo parentDistrabutor = apiDistrabutorMapper.queryObject(distributorId);
+            tempList.add(parentDistrabutor);
+            if(parentDistrabutor.getParentId() == -1){
+                break;
+            }
+            distributorId = parentDistrabutor.getParentId();
+        }
+        double parentPropit = Double.parseDouble(ResourceUtil.getConfigByName("parentPropit"));
+        double topPropit = Double.parseDouble(ResourceUtil.getConfigByName("topPropit"));
+
+        if(tempList.size() == 3){
+            calcuateMoney(tempList.get(0), money * parentPropit);
+            calcuateMoney(tempList.get(1), money * topPropit);
+            calcuateMoney(tempList.get(2), money * (1-parentPropit-topPropit));
+        }else if(tempList.size() == 2){
+            calcuateMoney(tempList.get(0), money * (1-parentPropit-topPropit));
+            calcuateMoney(tempList.get(1), money * 0.92);
+        }else{
+            calcuateMoney(tempList.get(0), money);
+        }
+
+    }
+
+    private void calcuateMoney(DistributorVo distributorVo, double profit){
+        if(distributorVo.getMoney() == null){
+            distributorVo.setMoney(0.00);
+        }
+        distributorVo.setMoney(distributorVo.getMoney() +profit);
+        apiDistrabutorMapper.update(distributorVo);
+    }
 }

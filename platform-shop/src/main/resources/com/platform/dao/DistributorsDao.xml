@@ -12,6 +12,7 @@
         T.address,
         T.parent_id,
         T.state,
+        T.money,
         T.create_time
         FROM specific_distributors T
         WHERE 1=1
@@ -22,7 +23,7 @@
 
     <select id="selectOne" parameterType="integer" resultType="com.platform.entity.DistributorsEntity">
         select id,name,description,
-        image,address,parent_id,state,
+        image,address,parent_id,state,money
         create_time
         FROM specific_distributors
         <where>

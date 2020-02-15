@@ -11,6 +11,7 @@
         <result property="parentId" column="parent_id"/>
         <result property="createTime" column="create_time"/>
         <result property="state" column="state"/>
+        <result property="money" column="money"/>
     </resultMap>
 
     <sql id="sqlContent">
@@ -24,6 +25,14 @@
         </where>
     </select>
 
+    <select id="queryByParentId" resultMap="distrabutorMap">
+        select <include refid="sqlContent"/> from specific_distributors
+        <where>
+            parent_id=#{parentId}
+        </where>
+    </select>
+
+
     <select id="queryBannerTotal" parameterType="integer" resultType="map">
         select
             (select count(distinct user_id) from nideshop_order) as fansNum,
@@ -32,8 +41,8 @@
     </select>
 
     <insert id="save" parameterType="com.platform.entity.DistributorVo">
-        insert into specific_distributors(name,description,image,address,parent_id,create_time,state)
-        values(#{name}, #{description}, #{image}, #{address}, #{parentId},#{createTime},#{state})
+        insert into specific_distributors(name,description,image,address,parent_id,create_time,state, money)
+        values(#{name}, #{description}, #{image}, #{address}, #{parentId},#{createTime},#{state}, #{money})
     </insert>
 
     <update id="update" parameterType="com.platform.entity.DistributorVo">
@@ -50,14 +59,17 @@
         <if test="address!=null and address.trim()!=''">
             ,address=#{address}
         </if>
-        <if test="parentId!=null and parentId.trim()!=''">
+        <if test="parentId!=null">
             ,parent_id=#{parentId}
         </if>
-        <if test="createTime!=null and createTime.trim()!=''">
+        <if test="createTime!=null">
             ,create_time=#{createTime}
         </if>
-        <if test="state!=null and state.trim()!=''">
+        <if test="state!=null">
             ,state=#{state}
+        </if>
+        <if test="money!=null">
+            ,money=#{money}
         </if>
         <where>
             id=#{id}
@@ -85,13 +97,13 @@
             <if test="address!=null and address.trim()!=''">
                 and address=#{address}
             </if>
-            <if test="parentId!=null and parentId.trim()!=''">
+            <if test="parentId!=null">
                 and parent_id=#{parentId}
             </if>
-            <if test="createTime!=null and createTime.trim()!=''">
+            <if test="createTime!=null">
                 and create_time=#{createTime}
             </if>
-            <if test="state!=null and state.trim()!=''">
+            <if test="state!=null">
                 and state=#{state}
             </if>
         </where>

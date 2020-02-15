@@ -43,6 +43,7 @@ TreeGrid.initColumn = function () {
 		{title: '图标', field: 'image', align: 'center', valign: 'middle', width: '100px'},
 		{title: '描述', field: 'description', align: 'center', valign: 'middle', width: '200px'},
 		{title: '地址', field: 'address', align: 'center', valign: 'middle', width: '200px'},
+		{title: '金额', field: 'money', align: 'center', valign: 'middle', width: '200px'},
 		{title: '创建时间', field: 'createTime', align: 'center', valign: 'middle', width: '200px',
 			formatter: function (item) {
 				return transDate(item.createTime, 'yyyy-MM-dd hh:mm:sss');

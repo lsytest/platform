@@ -70,6 +70,9 @@ public class DistributorVo implements Serializable {
     @ApiModelProperty(value="'1=未审核；2=审核成功；3=审核失败")
     private Integer state;
 
+    @ApiModelProperty(value = "利润")
+    private Double money;
+
     private List ids;
 
     public Integer getId() {
@@ -142,5 +145,13 @@ public class DistributorVo implements Serializable {
 
     public void setIds(List ids) {
         this.ids = ids;
+    }
+
+    public Double getMoney() {
+        return money;
+    }
+
+    public void setMoney(Double money) {
+        this.money = money;
     }
 }

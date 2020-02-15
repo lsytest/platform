@@ -61,5 +61,7 @@ public class DistributorsEntity implements Serializable {
 
     private Integer state;
 
+    private Double money;
+
     private List ids;
 }

@@ -7,4 +7,5 @@ import java.util.Map;
 
 public interface ApiDistrabutorMapper extends BaseDao<DistributorVo>{
     Map queryBannerTotal(@Param("distrabutorId") Integer distrabutorId);
+    DistributorVo queryByParentId(@Param("parentId") Integer parentId);
 }
